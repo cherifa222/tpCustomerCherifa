@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+    <f:metadata>
+        <f:viewParam name="idCustomer" value="#{customerDetailsBean.idCustomer}"
+                     required="true"/>
+        <f:viewAction action="#{customerDetailsBean.loadCustomer}"/>
+    </f:metadata>
+
+    <h:head>
+        <title>Détails du client</title>
+    </h:head>
+
+    <h:body>
+
+        <h:outputText value="Aucun client avec l'id #{customerDetailsBean.idCustomer} !"
+                      rendered="#{customerDetailsBean.customer == null}"/>
+
+        <h:form rendered="#{customerDetailsBean.customer != null}">
+
+            <h:panelGrid columns="2">
+
+                <h:outputLabel value="Id :"/>
+                <h:inputText id="clientID"
+                             value="#{customerDetailsBean.customer.clientID}"
+                             title="Id" readonly="true"/>
+
+                <h:outputLabel value="Nom :"/>
+                <h:inputText id="nom"
+                             value="#{customerDetailsBean.customer.nom}"
+                             title="Nom"/>
+
+                <h:outputLabel value="Adresse 1 :"/>
+                <h:inputText id="adresse1"
+                             value="#{customerDetailsBean.customer.adresse1}"
+                             title="Adresse1"/>
+
+                <h:outputLabel value="Adresse 2 :"/>
+                <h:inputText id="adresse2"
+                             value="#{customerDetailsBean.customer.adresse2}"
+                             title="Adresse2"/>
+
+                <h:outputLabel value="Ville :"/>
+                <h:inputText id="ville"
+                             value="#{customerDetailsBean.customer.ville}"
+                             title="Ville"/>
+
+                <h:outputLabel value="Etat :"/>
+                <h:inputText id="etat"
+                             value="#{customerDetailsBean.customer.etat}"
+                             title="Etat"/>
+
+                <h:outputLabel value="Téléphone :"/>
+                <h:inputText id="telephone"
+                             value="#{customerDetailsBean.customer.telephone}"
+                             title="Telephone"/>
+
+                <h:outputLabel value="Fax :"/>
+                <h:inputText id="fax"
+                             value="#{customerDetailsBean.customer.fax}"
+                             title="Fax"/>
+
+                <h:outputLabel value="Email :"/>
+                <h:inputText id="email"
+                             value="#{customerDetailsBean.customer.email}"
+                             title="Email"/>
+
+                <h:outputLabel value="Limite crédit :"/>
+                <h:inputText id="creditLimit"
+                             value="#{customerDetailsBean.customer.creditLimit}"
+                             title="CreditLimit"/>
+
+                <h:outputLabel value="Remise :"/>
+                <h:selectOneMenu id="compte"
+                                 value="#{customerDetailsBean.customer.compte}"
+                                 title="Compte" required="true"
+                                 requiredMessage="Le champ Remise est obligatoire."
+                                 converter="compteConverter">
+                    <f:selectItems value="#{customerDetailsBean.comptes}"
+                                   var="compte"
+                                   itemLabel="#{compte.code} : #{compte.rate} %"
+                                   itemValue="#{compte}"/>
+                </h:selectOneMenu>
+
+            </h:panelGrid>
+
+            <h:messages/>
+
+            <h:commandButton id="update" value="Enregistrer"
+                             action="#{customerDetailsBean.update}"/>
+
+        </h:form>
+
+        <h:button id="back" value="Revenir à la liste" outcome="customerList"/>
+
+    </h:body>
+</html>

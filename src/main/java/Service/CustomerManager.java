@@ -31,6 +31,10 @@ public class CustomerManager {
         return em.merge(client);
     }
 
+    public Client findById(int idCustomer) {
+        return em.find(Client.class, idCustomer);
+    }
+
     @Transactional
     public void persist(Client client) {
         em.persist(client);
