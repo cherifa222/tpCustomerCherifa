@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Liste des clients</title>
@@ -10,37 +11,61 @@
 
     <h:body>
 
-        <h:dataTable value="#{customerBean.customers}" var="item">
+        <h:form>
+            <p:dataTable value="#{customerBean.customers}" var="item"
+                         widgetVar="customerTable"
+                         emptyMessage="Aucun client avec ce critère"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="2,4,8,10"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-            <h:column>
                 <f:facet name="header">
-                    <h:outputText value="Id"/>
+                    <p:outputPanel>
+                        <h:outputText value="Recherche dans tous les champs de recherche : "/>
+                        <p:inputText id="globalFilter" onkeyup="PF('customerTable').filter()"
+                                     style="width:150px"/>
+                    </p:outputPanel>
                 </f:facet>
-                <h:outputText value="#{item.clientID}"/>
-            </h:column>
 
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Nom"/>
-                </f:facet>
-                <h:outputText value="#{item.nom}"/>
-            </h:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"/>
+                    </f:facet>
+                    <h:link outcome="customerDetails?idCustomer=#{item.clientID}"
+                            value="#{item.clientID}"/>
+                </p:column>
 
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Ville"/>
-                </f:facet>
-                <h:outputText value="#{item.ville}"/>
-            </h:column>
+                <p:column sortBy="#{item.nom}" filterBy="#{item.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Nom"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </p:column>
 
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Taux de remise"/>
-                </f:facet>
-                <h:outputText value="#{item.compte.code} : #{item.compte.rate} %"/>
-            </h:column>
+                <p:column sortBy="#{item.ville}">
+                    <f:facet name="header">
+                        <h:outputText value="Ville"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ville}"/>
+                </p:column>
 
-        </h:dataTable>
+                <p:column sortBy="#{item.etat}" filterBy="#{item.etat}">
+                    <f:facet name="header">
+                        <h:outputText value="Etat"/>
+                    </f:facet>
+                    <h:outputText value="#{item.etat}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Taux de remise"/>
+                    </f:facet>
+                    <h:outputText value="#{item.compte.code} : #{item.compte.rate} %"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
 
     </h:body>
 </html>
